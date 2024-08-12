@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.cammac.tabelaFipe.model.AnoModelo;
+import com.cammac.tabelaFipe.model.Dados;
 import com.cammac.tabelaFipe.model.Fipe;
-import com.cammac.tabelaFipe.model.Marca;
 import com.cammac.tabelaFipe.model.Modelos;
 import com.cammac.tabelaFipe.model.TipoVeiculo;
 
@@ -16,9 +15,9 @@ public class VeiculoService {
 	private ConsumoApi consumo = new ConsumoApi();
 	private ConvertDados conversor = new ConvertDados();
 
-	public List<Marca> listaMarcas(TipoVeiculo veiculo) {
+	public List<Dados> listaMarcas(TipoVeiculo veiculo) {
 		var json = consumo.obterDados(URL_API_PADRAO + veiculo.getDescription() +"/marcas");		
-		Marca[] lista = conversor.obterDados(json, Marca[].class);
+		Dados[] lista = conversor.obterDados(json, Dados[].class);
 		return  new ArrayList<>(Arrays.asList(lista));
 	}
 
@@ -30,13 +29,13 @@ public class VeiculoService {
 		return conversor.obterDados(json, Modelos.class);
 	}
 
-	public List<AnoModelo> listaAnosModelo(TipoVeiculo veiculo , Integer codigoMarca , Integer codigoModelo) {
+	public List<Dados> listaAnosModelo(TipoVeiculo veiculo , Integer codigoMarca , Integer codigoModelo) {
 
 		var json = consumo.obterDados(URL_API_PADRAO + veiculo.getDescription() + "/marcas/" + codigoMarca + "/modelos/" + codigoModelo + "/anos"); 
 		if (json.contains("error")) {
 			return new ArrayList<>();
 		}
-		AnoModelo[] lista = conversor.obterDados(json, AnoModelo[].class);
+		Dados[] lista = conversor.obterDados(json, Dados[].class);
 		return  new ArrayList<>(Arrays.asList(lista));
 	}
 

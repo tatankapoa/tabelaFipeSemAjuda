@@ -3,9 +3,9 @@ package com.cammac.tabelaFipe.control;
 import java.util.Scanner;
 
 import com.cammac.tabelaFipe.model.TipoVeiculo;
-import com.cammac.tabelaFipe.util.VeiculoUtil;
+import com.cammac.tabelaFipe.servico.ATeclado;
 
-public class Menu {
+public class Menu extends ATeclado{
 	
 	private Scanner leitura  =new Scanner(System.in);
 	
@@ -21,8 +21,8 @@ public class Menu {
 			System.out.println("[3] - Caminhoes");
 			System.out.println("[0] - Sair");
 			
-			var inputOpcao = VeiculoUtil.inputTeclado(leitura, "Entre com a opção desejada: ");
-		    var opcao = VeiculoUtil.validaLeituraNumerica(inputOpcao);
+			var inputOpcao = this.inputTeclado(leitura, "Entre com a opção desejada: ");
+		    var opcao = this.validaLeituraNumerica(inputOpcao);
 			
 			switch (opcao) { 
 				case 1: {
