@@ -120,6 +120,11 @@ public class VeiculoControl extends ATeclado {
 					}
 					case 7: {
 						
+						if (modelos == null) {
+							System.out.println("Ação não permitida. Por favor, realize a opção 4 primeiro.");
+							break;
+						}	
+						
 						var inputCodigoMarca = this.inputTeclado(leitura, "Por favor, digite o código da marca do veículo: ");
 						var codigoMarca =  this.validaLeituraNumerica(inputCodigoMarca);
 						
@@ -131,7 +136,12 @@ public class VeiculoControl extends ATeclado {
 							List<FipeVeiculo> lista =  (listaAnoModelo.stream()
 									  								  .map(l-> service.obtemFipe(tipoVeiculo, codigoMarca, codigoModelo ,l.codigo()))
 									  								  .collect(Collectors.toList())).stream().map(f-> new FipeVeiculo(f)).collect(Collectors.toList());
-							lista.forEach(System.out::println);
+							
+							Optional<Dados> optModelo = modelos.lista().stream().filter(m-> m.codigo().equals(inputCodigoModelo)).findAny();
+							if (optModelo.isPresent()) {
+								System.out.println("Lista de Modelos: Codigo:"+  optModelo.get().codigo() + " Descrição " + optModelo.get().nome());
+								lista.forEach(System.out::println);
+							}
 							
 						} else {
 							System.out.println("Código da marca["+inputCodigoMarca+"] e modelo["+inputCodigoModelo+"] do veículo informado não foi localizado.");
@@ -139,6 +149,7 @@ public class VeiculoControl extends ATeclado {
 						this.limpaScanner(leitura);
 						break;
 					}
+					
 					default:
 						 System.out.println("Opção inválida["+inputOpcao+"]. Tente novamente.");
 						 this.limpaScanner(leitura);
