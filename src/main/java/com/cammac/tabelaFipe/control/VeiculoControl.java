@@ -44,15 +44,15 @@ public class VeiculoControl extends ATeclado {
 						break;
 					}
 					case 1: {
-						marcas.forEach(System.out::println);
+						marcas.forEach(m-> { System.out.println("Código: " + m.codigo() + " Marca: " + m.nome());});
 						this.limpaScanner(leitura);
 						break;
 					}
 					case 2:{ 	
 						var inputLetras = this.inputTeclado(leitura, "Por favor, digite as letras iniciais de alguma marca de carro:");
-						List<Dados> marcasPorLetraIniciais = marcas.stream().filter(a -> a.nome().toUpperCase().startsWith(inputLetras.toUpperCase())).collect(Collectors.toList());
+						List<Dados> marcasPorLetraIniciais = marcas.stream().filter(a -> a.nome().toUpperCase().contains(inputLetras.toUpperCase())).collect(Collectors.toList());
 						if (!marcasPorLetraIniciais.isEmpty()) {
-							marcasPorLetraIniciais.forEach(System.out::println);
+							marcasPorLetraIniciais.forEach(m-> { System.out.println("Código: " + m.codigo() + " Marca: " + m.nome());});
 						} else {
 							System.out.println("Letras iniciais informadas["+inputLetras+"] da marca do veículo não localizado.");
 						}
@@ -61,11 +61,9 @@ public class VeiculoControl extends ATeclado {
 					}
 					case 3:{						
 						var inputMarca = this.inputTeclado(leitura, "Por favor, digite o código da marca do veículo: ");
-						var codigoMarca =this.validaLeituraNumerica(inputMarca);
-								
-						Optional<Dados> marcaPorCodigo= marcas.stream().filter(m -> m.codigo().equals(codigoMarca)).findAny();
-						if (marcaPorCodigo.isPresent()) {
-							System.out.println(marcaPorCodigo);
+						Optional<Dados> marcaPorCodigo= marcas.stream().filter(m -> m.codigo().equals(inputMarca)).findAny();
+						if (marcaPorCodigo.isPresent()) {							
+							System.out.println("Código: " + marcaPorCodigo.get().codigo() + " Marca: " + marcaPorCodigo.get().nome());
 						} else {
 							System.out.println("Código da marca["+inputMarca+"] do veículo não localizado.");
 						}
@@ -74,11 +72,9 @@ public class VeiculoControl extends ATeclado {
 					}
 					case 4:{
 						var inputMarca = this.inputTeclado(leitura,"Por favor, insira o código da marca para visualizar os modelos disponíveis desse veículos :");
-						var codigoMarca =this.validaLeituraNumerica(inputMarca);
-						
-						modelos = service.obtemModelos(tipoVeiculo, codigoMarca);
+						modelos = service.obtemModelos(tipoVeiculo, inputMarca);
 						if (modelos !=null && modelos.lista() != null && !modelos.lista().isEmpty()) {
-							modelos.lista().forEach(System.out::println);
+							modelos.lista().forEach(modelo-> {System.out.println("Código do Modelo: " + modelo.codigo() + " Modelo: " + modelo.nome());});
 						} else {
 							System.out.println("Código da marca["+inputMarca+"] do veículo não localizado.");
 						}
@@ -92,9 +88,9 @@ public class VeiculoControl extends ATeclado {
 						}
 						var inputLetras = this.inputTeclado(leitura,"Por favor, digite as letras iniciais do modelo do veículo:");
 
-						List<Dados> modelosPorLetraIniciais = modelos.lista().stream().filter(m-> m.nome().toLowerCase().startsWith(inputLetras.toLowerCase())).collect(Collectors.toList());
+						List<Dados> modelosPorLetraIniciais = modelos.lista().stream().filter(m-> m.nome().toLowerCase().contains(inputLetras.toLowerCase())).collect(Collectors.toList());
 						if (!modelosPorLetraIniciais.isEmpty()) {
-							modelosPorLetraIniciais.forEach(System.out::println);
+							modelosPorLetraIniciais.forEach(modelo->{System.out.println("Código Modelo: " + modelo.codigo() + " Modelo: " + modelo.nome() );});
 						} else {
 							System.out.println("Letras iniciais informadas["+inputLetras+"] do modelo do veículo não localizado.");
 						}
@@ -107,11 +103,10 @@ public class VeiculoControl extends ATeclado {
 							break;
 						}						
 						var inputCodigoModelo = this.inputTeclado(leitura,"Por favor, digite o código do modelo do veículo: ");
-						var codigoModelo = this.validaLeituraNumerica(inputCodigoModelo);
 								
-						Optional<Dados> modeloPorCodigo= modelos.lista().stream().filter(m -> m.codigo().equals(codigoModelo)).findAny();
-						if (modeloPorCodigo.isPresent()) {
-							System.out.println(modeloPorCodigo);
+						Optional<Dados> modeloPorCodigo= modelos.lista().stream().filter(m -> m.codigo().equals(inputCodigoModelo)).findAny();
+						if (modeloPorCodigo.isPresent()) {							
+							System.out.println("Código Modelo: " + modeloPorCodigo.get().codigo() + " Modelo: " + modeloPorCodigo.get().nome() );
 						} else {
 							System.out.println("Código do modelo["+inputCodigoModelo+"] do veículo não localizado.");
 						}
@@ -124,17 +119,13 @@ public class VeiculoControl extends ATeclado {
 							System.out.println("Ação não permitida. Por favor, realize a opção 4 primeiro.");
 							break;
 						}	
-						
-						var inputCodigoMarca = this.inputTeclado(leitura, "Por favor, digite o código da marca do veículo: ");
-						var codigoMarca =  this.validaLeituraNumerica(inputCodigoMarca);
-						
+						var inputCodigoMarca = this.inputTeclado(leitura, "Por favor, digite o código da marca do veículo: ");						
 						var inputCodigoModelo =  this.inputTeclado(leitura, "Por favor, digite o código do modelo do veículo: ");
-						var codigoModelo = this.validaLeituraNumerica(inputCodigoModelo);
 						
-						List<Dados> listaAnoModelo = service.listaAnosModelo(tipoVeiculo, codigoMarca, codigoModelo);
+						List<Dados> listaAnoModelo = service.listaAnosModelo(tipoVeiculo, inputCodigoMarca, inputCodigoModelo);
 						if (listaAnoModelo != null && !listaAnoModelo.isEmpty()) {
 							List<FipeVeiculo> lista =  (listaAnoModelo.stream()
-									  								  .map(l-> service.obtemFipe(tipoVeiculo, codigoMarca, codigoModelo ,l.codigo()))
+									  								  .map(l-> service.obtemFipe(tipoVeiculo, inputCodigoMarca, inputCodigoModelo ,l.codigo()))
 									  								  .collect(Collectors.toList())).stream().map(f-> new FipeVeiculo(f)).collect(Collectors.toList());
 							
 							Optional<Dados> optModelo = modelos.lista().stream().filter(m-> m.codigo().equals(inputCodigoModelo)).findAny();

@@ -21,7 +21,7 @@ public class VeiculoService {
 		return  new ArrayList<>(Arrays.asList(lista));
 	}
 
-	public Modelos obtemModelos(TipoVeiculo veiculo , Integer codigoMarca) {
+	public Modelos obtemModelos(TipoVeiculo veiculo , String codigoMarca) {
 		var json = consumo.obterDados(URL_API_PADRAO + veiculo.getDescription() + "/marcas/" + codigoMarca + "/modelos");
 		if (json.contains("error")) {
 			new ArrayList<>();
@@ -29,7 +29,7 @@ public class VeiculoService {
 		return conversor.obterDados(json, Modelos.class);
 	}
 
-	public List<Dados> listaAnosModelo(TipoVeiculo veiculo , Integer codigoMarca , Integer codigoModelo) {
+	public List<Dados> listaAnosModelo(TipoVeiculo veiculo , String codigoMarca , String codigoModelo) {
 
 		var json = consumo.obterDados(URL_API_PADRAO + veiculo.getDescription() + "/marcas/" + codigoMarca + "/modelos/" + codigoModelo + "/anos"); 
 		if (json.contains("error")) {
@@ -39,7 +39,7 @@ public class VeiculoService {
 		return  new ArrayList<>(Arrays.asList(lista));
 	}
 
-	public Fipe obtemFipe(TipoVeiculo veiculo , Integer codigoMarca , Integer codigoModelo , String codigoFipe) {
+	public Fipe obtemFipe(TipoVeiculo veiculo , String codigoMarca , String codigoModelo , String codigoFipe) {
 		var json = consumo.obterDados(URL_API_PADRAO + veiculo.getDescription() + "/marcas/" + codigoMarca + "/modelos/"+ codigoModelo + "/anos/" + codigoFipe); 
 		if (json.contains("error")) {
 			new ArrayList<>();
